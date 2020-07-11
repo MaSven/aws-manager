@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'org.openjfx.javafxplugin' version '0.0.9'
+	id 'org.beryx.jlink' version '2.21.0'
+}
+
+javafx {
+	modules = [
+		'javafx.controls',
+		'javafx.fxml'
+	]
+}
+
+
+
+tasks.withType(JavaCompile).each {
+	it.options.compilerArgs.add('--enable-preview')
+}
+mainClassName="aws.sqs.testmessagesender.gui.main/de.otto.ipanema.aws.sqs.testmessagesender.gui.Main"
+application{
+	mainClassName="de.otto.ipanema.tools.aws.sqs.testmessagesender.gui.Main"
+	mainModule='aws.sqs.testmessagesender.gui.main'
+}
+
+jar {
+	manifest {
+		attributes 'Implementation-Title': "directer",
+		'Main-Class': 'de.otto.ipanema.tools.aws.sqs.testmessagesender.gui.Main'
+	}
+}
+
+
+
+dependencies {
+	implementation project(':sqsinterface')
+	runtimeOnly project(':sqs')
+}
+jlink{
+	options = [
+		'--bind-services',
+		'--strip-debug',
+		'--compress',
+		'2',
+		'--no-header-files',
+		'--no-man-pages'
+	]
+	addExtraDependencies("javafx")
+	launcher{
+		name = "directer"
+		jvmArgs = ['--enable-preview']
+	}
+	mergedModule {
+		requires 'com.fasterxml.jackson.core';
+		requires 'java.management';
+		requires 'java.naming';
+		requires 'com.fasterxml.jackson.annotation';
+		requires 'com.fasterxml.jackson.databind';
+		requires 'java.logging';
+		requires 'java.xml';
+		requires 'java.security.jgss';
+		requires 'java.instrument';
+		requires 'jdk.unsupported';
+		uses 'reactor.blockhound.integration.BlockHoundIntegration';
+		provides 'software.amazon.awssdk.http.async.SdkAsyncHttpService' with 'software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService';
+		provides 'software.amazon.awssdk.http.SdkHttpService' with 'software.amazon.awssdk.http.apache.ApacheSdkHttpService';
+		provides 'reactor.blockhound.integration.BlockHoundIntegration' with 'io.netty.util.internal.Hidden.NettyBlockHoundIntegration',
+				'reactor.blockhound.integration.LoggingIntegration',
+				'reactor.blockhound.integration.ReactorIntegration',
+				'reactor.blockhound.integration.RxJava2Integration',
+				'reactor.blockhound.integration.StandardOutputIntegration';
+	}
+}

@@ -1,0 +1,6 @@
+rootProject.name = 'aws-sqs-testmessagesender'
+include 'cli'
+include 'sqsinterface'
+include 'sqs'
+include 'gui'
+

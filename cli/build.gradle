@@ -1,0 +1,66 @@
+plugins {
+	id 'application'
+	id 'org.beryx.jlink' version '2.21.0'
+}
+
+
+
+mainClassName="aws.sqs.testmessagesender.cli.main/de.otto.ipanema.awssqstestmessagesender.cli.Main"
+application{
+	mainClassName="de.otto.ipanema.awssqstestmessagesender.cli.Main"
+	mainModule='aws.sqs.testmessagesender.cli.main'
+}
+
+tasks.withType(JavaCompile).each {
+	it.options.compilerArgs.add('--enable-preview')
+}
+jar {
+	manifest {
+		attributes 'Implementation-Title': "directer",
+		'Main-Class': 'de.otto.ipanema.awssqstestmessagesender.cli.Main'
+	}
+}
+
+
+
+
+dependencies {
+	implementation project(':sqsinterface')
+	runtimeOnly project(':sqs')
+	implementation('commons-cli:commons-cli:1.4')
+}
+
+jlink{
+	options = [
+		'--bind-services',
+		'--strip-debug',
+		'--compress',
+		'2',
+		'--no-header-files',
+		'--no-man-pages'
+	]
+	launcher{
+		name = "directer"
+		jvmArgs = ['--enable-preview']
+	}
+	mergedModule {
+		requires 'com.fasterxml.jackson.core';
+		requires 'java.management';
+		requires 'java.naming';
+		requires 'com.fasterxml.jackson.annotation';
+		requires 'com.fasterxml.jackson.databind';
+		requires 'java.logging';
+		requires 'java.xml';
+		requires 'java.security.jgss';
+		requires 'java.instrument';
+		requires 'jdk.unsupported';
+		uses 'reactor.blockhound.integration.BlockHoundIntegration';
+		provides 'software.amazon.awssdk.http.async.SdkAsyncHttpService' with 'software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService';
+		provides 'software.amazon.awssdk.http.SdkHttpService' with 'software.amazon.awssdk.http.apache.ApacheSdkHttpService';
+		provides 'reactor.blockhound.integration.BlockHoundIntegration' with 'io.netty.util.internal.Hidden.NettyBlockHoundIntegration',
+				'reactor.blockhound.integration.LoggingIntegration',
+				'reactor.blockhound.integration.ReactorIntegration',
+				'reactor.blockhound.integration.RxJava2Integration',
+				'reactor.blockhound.integration.StandardOutputIntegration';
+	}
+}
