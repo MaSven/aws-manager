@@ -11,7 +11,9 @@ repositories {
 
 dependencies {
 	implementation(platform("software.amazon.awssdk:bom:$awssdkVersion"))
-	implementation('software.amazon.awssdk:sqs')
+	implementation('software.amazon.awssdk:sqs'){
+		exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
+	}
 	implementation('software.amazon.awssdk:apache-client')
 	implementation project(':sqsinterface')
 	implementation 'io.netty:netty-common:4.1.46.Final'

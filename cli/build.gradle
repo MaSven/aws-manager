@@ -5,9 +5,9 @@ plugins {
 
 
 
-mainClassName="aws.sqs.testmessagesender.cli.main/de.otto.ipanema.awssqstestmessagesender.cli.Main"
+mainClassName="aws.sqs.testmessagesender.cli.main/space.smarquardt.aws.manager.cli.Main"
 application{
-	mainClassName="de.otto.ipanema.awssqstestmessagesender.cli.Main"
+	mainClassName="space.smarquardt.aws.manager.cli.Main"
 	mainModule='aws.sqs.testmessagesender.cli.main'
 }
 
@@ -55,7 +55,6 @@ jlink{
 		requires 'java.instrument';
 		requires 'jdk.unsupported';
 		uses 'reactor.blockhound.integration.BlockHoundIntegration';
-		provides 'software.amazon.awssdk.http.async.SdkAsyncHttpService' with 'software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService';
 		provides 'software.amazon.awssdk.http.SdkHttpService' with 'software.amazon.awssdk.http.apache.ApacheSdkHttpService';
 		provides 'reactor.blockhound.integration.BlockHoundIntegration' with 'io.netty.util.internal.Hidden.NettyBlockHoundIntegration',
 				'reactor.blockhound.integration.LoggingIntegration',

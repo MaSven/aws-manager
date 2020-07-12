@@ -5,6 +5,7 @@ plugins {
 }
 
 javafx {
+	version = '14'
 	modules = [
 		'javafx.controls',
 		'javafx.fxml'
@@ -13,13 +14,20 @@ javafx {
 
 
 
+
+
+
+
+
+
 tasks.withType(JavaCompile).each {
 	it.options.compilerArgs.add('--enable-preview')
 }
-mainClassName="aws.sqs.testmessagesender.gui.main/de.otto.ipanema.aws.sqs.testmessagesender.gui.Main"
+mainClassName="aws.sqs.testmessagesender.gui.Main/space.smarquardt.aws.manager.gui.Main"
 application{
-	mainClassName="de.otto.ipanema.tools.aws.sqs.testmessagesender.gui.Main"
-	mainModule='aws.sqs.testmessagesender.gui.main'
+	applicationDefaultJvmArgs = ['--enable-preview']
+	mainClassName="space.smarquardt.aws.manager.gui.Main"
+	mainModule = 'aws.manager.gui.Main'
 }
 
 jar {
@@ -34,6 +42,11 @@ jar {
 dependencies {
 	implementation project(':sqsinterface')
 	runtimeOnly project(':sqs')
+	implementation group: 'com.airhacks', name: 'afterburner.fx', version: '1.7.0'
+	implementation 'org.controlsfx:controlsfx:11.0.2'
+	// https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
+	implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
+
 }
 jlink{
 	options = [
@@ -51,22 +64,29 @@ jlink{
 	}
 	mergedModule {
 		requires 'com.fasterxml.jackson.core';
-		requires 'java.management';
-		requires 'java.naming';
+		requires 'javafx.graphics';
 		requires 'com.fasterxml.jackson.annotation';
 		requires 'com.fasterxml.jackson.databind';
 		requires 'java.logging';
 		requires 'java.xml';
 		requires 'java.security.jgss';
-		requires 'java.instrument';
+		requires 'javafx.base';
+		requires 'javafx.fxml';
 		requires 'jdk.unsupported';
+		requires 'java.management';
+		requires 'java.naming';
+		requires 'java.instrument';
+		uses 'com.airhacks.afterburner.injection.PresenterFactory';
 		uses 'reactor.blockhound.integration.BlockHoundIntegration';
-		provides 'software.amazon.awssdk.http.async.SdkAsyncHttpService' with 'software.amazon.awssdk.http.nio.netty.NettySdkAsyncHttpService';
 		provides 'software.amazon.awssdk.http.SdkHttpService' with 'software.amazon.awssdk.http.apache.ApacheSdkHttpService';
 		provides 'reactor.blockhound.integration.BlockHoundIntegration' with 'io.netty.util.internal.Hidden.NettyBlockHoundIntegration',
 				'reactor.blockhound.integration.LoggingIntegration',
 				'reactor.blockhound.integration.ReactorIntegration',
 				'reactor.blockhound.integration.RxJava2Integration',
 				'reactor.blockhound.integration.StandardOutputIntegration';
+	}
+	jpackage{
+		skipInstaller=true
+		
 	}
 }

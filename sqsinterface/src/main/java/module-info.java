@@ -1,5 +1,5 @@
-module aws.sqs.testmessagesender.sqsinterface.main {
+module aws.manager.sqsinterface.Main {
   requires java.base;
 
-  exports de.otto.ipanema.tools.aws.sqs.testmessagesender.sqsinterface;
+  exports space.smarquardt.aws.manager.sqsinterface;
 }

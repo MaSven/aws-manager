@@ -1,8 +1,10 @@
-module aws.sqs.testmessagesender.cli.main {
-  requires java.base;
-  requires aws.sqs.testmessagesender.sqsinterface.main;
+import space.smarquardt.aws.manager.sqsinterface.Sqs;
 
-  uses de.otto.ipanema.tools.aws.sqs.testmessagesender.sqsinterface.Sqs;
+module aws.manager.cli.main {
+  requires java.base;
+  requires aws.manager.sqsinterface.Main;
+
+  uses Sqs;
 
   requires commons.cli;
 }

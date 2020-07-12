@@ -1,13 +1,17 @@
-module aws.sqs.testmessagesender.sqs.main {
+import space.smarquardt.aws.manager.sqs.SqsImpl;
+import space.smarquardt.aws.manager.sqsinterface.Sqs;
+
+module aws.manager.sqs.Main {
   requires java.base;
   requires software.amazon.awssdk.auth;
   requires software.amazon.awssdk.services.sqs;
-  requires aws.sqs.testmessagesender.sqsinterface.main;
+  requires aws.manager.sqsinterface.Main;
   requires java.xml;
   requires software.amazon.awssdk.http;
   requires software.amazon.awssdk.http.apache;
   requires com.fasterxml.jackson.databind;
+  requires io.vavr;
 
-  provides de.otto.ipanema.tools.aws.sqs.testmessagesender.sqsinterface.Sqs with
-      de.otto.ipanema.tools.aws.sqs.testmessagesender.sqs.SqsImpl;
+  provides Sqs with
+      SqsImpl;
 }

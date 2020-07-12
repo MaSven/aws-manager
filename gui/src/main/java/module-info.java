@@ -1,10 +1,18 @@
-module aws.sqs.testmessagesender.gui.main {
+module aws.manager.gui.Main {
+  requires java.base;
   requires javafx.controls;
+  requires javafx.graphics;
+  requires afterburner.fx;
   requires javafx.fxml;
-  requires aws.sqs.testmessagesender.sqsinterface.main;
+  requires java.annotation;
 
-  opens de.otto.ipanema.tools.aws.sqs.testmessagesender.gui to
-      javafx.graphics,
+  opens space.smarquardt.aws.manager.gui to
+      javafx.graphics;
+  opens space.smarquardt.aws.manager.gui.sqs to
+      afterburner.fx,
       javafx.fxml;
-  uses de.otto.ipanema.tools.aws.sqs.testmessagesender.sqsinterface.Sqs;
+
+  requires aws.manager.sqsinterface.Main;
+
+  uses space.smarquardt.aws.manager.sqsinterface.Sqs;
 }
