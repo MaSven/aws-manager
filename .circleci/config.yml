@@ -10,9 +10,6 @@ jobs:
     executor:
       name: win/default
       shell: powershell.exe
-    docker:
-      # specify the version you desire here
-      - image: circleci/openjdk:15-ea-30-jdk-buster
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
