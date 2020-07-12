@@ -41,7 +41,7 @@ jobs:
       - run:
           name: "echo"
           command: dir
-      - run: gradlew.bat dependencies
+      - run: ./gradlew dependencies -Dorg.gradle.java.home=/openjdk
       - save_cache:
           paths:
             - ~/.gradle
@@ -49,6 +49,6 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: gradlew.bat test
-      - run: gradlew.bat jpackage
+      - run: ./gradlew test -Dorg.gradle.java.home=/openjdk
+      - run: ./gradlew jpackage -Dorg.gradle.java.home=/openjdk
 
