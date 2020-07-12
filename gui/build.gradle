@@ -87,6 +87,5 @@ jlink{
 	}
 	jpackage{
 		skipInstaller=true
-		
 	}
 }
