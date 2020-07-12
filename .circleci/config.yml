@@ -41,7 +41,7 @@ jobs:
       - run:
           name: "echo"
           command: dir
-      - run: ./gradlew dependencies -Dorg.gradle.java.home=openjdk
+      - run: ./gradlew dependencies "-Dorg.gradle.java.home=openjdk"
       - save_cache:
           paths:
             - ~/.gradle
