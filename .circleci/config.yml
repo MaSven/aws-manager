@@ -38,6 +38,9 @@ jobs:
       - run:
           name: "uncompress"
           command: Expand-Archive -LiteralPath openjdk.zip -DestinationPath openjdk
+      - run:
+          name: "echo"
+          command: dir
       - run: gradlew dependencies
       - save_cache:
           paths:
