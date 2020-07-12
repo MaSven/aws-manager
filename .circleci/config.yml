@@ -41,7 +41,7 @@ jobs:
       - run:
           name: "echo"
           command: dir
-      - run: gradlew dependencies
+      - run: gradlew.bat dependencies
       - save_cache:
           paths:
             - ~/.gradle
@@ -49,6 +49,6 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: gradlew test
-      - run: gradlew jpackage
+      - run: gradlew.bat test
+      - run: gradlew.bat jpackage
 
