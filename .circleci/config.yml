@@ -50,7 +50,7 @@ jobs:
 
       # run tests!
       - run: ./gradlew test "-Dorg.gradle.java.home=openjdk/jdk-15" "--no-daemon"
-      - run: ./gradlew jpackageImage "-Dorg.gradle.java.home=openjdk/jdk-15" "--no-daemon"
+      - run: ./gradlew :gui:jpackageImage "-Dorg.gradle.java.home=openjdk/jdk-15" "--no-daemon"
       - store_artifacts:
           path: gui/build/image
       - store_artifacts:
