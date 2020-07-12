@@ -2,12 +2,17 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 #
-version: 2
+version: 2.1
+orbs:
+  win: circleci/windows@2.2.0
 jobs:
   build:
+    executor:
+      name: win/default
+      shell: powershell.exe
     docker:
       # specify the version you desire here
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:15-ea-30-jdk-buster
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -23,7 +28,9 @@ jobs:
 
     steps:
       - checkout
-
+      - run:
+          name: "Install java 15"
+          command: (New-Object System.Net.WebClient).DownloadFile("https://download.java.net/java/early_access/jdk15/31/GPL/openjdk-15-ea+31_windows-x64_bin.zip","openjdk.zip")
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -31,7 +38,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: gradle dependencies
+      - run: gradlew.bat dependencies
 
       - save_cache:
           paths:
@@ -39,5 +46,6 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: gradle test
-      - run: ./gradlew jpackage
+      - run: gradlew.bat test
+      - run: gradlew.bat jpackage
+
