@@ -86,6 +86,6 @@ jlink{
 				'reactor.blockhound.integration.StandardOutputIntegration';
 	}
 	jpackage{
-		skipInstaller=true
+		skipInstaller=false
 	}
 }

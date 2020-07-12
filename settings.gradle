@@ -1,4 +1,4 @@
-rootProject.name = 'aws-sqs-testmessagesender'
+rootProject.name = 'aws-manager'
 include 'cli'
 include 'sqsinterface'
 include 'sqs'
