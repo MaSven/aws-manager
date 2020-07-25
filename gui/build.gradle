@@ -46,8 +46,14 @@ dependencies {
 	implementation project(':stsinterface')
 	runtimeOnly project(':sts')
 
-	implementation group: 'com.airhacks', name: 'afterburner.fx', version: '1.7.0'
-	implementation 'org.controlsfx:controlsfx:11.0.2'
+	implementation group: 'com.airhacks', name: 'afterburner.fx', version: '1.7.0', {
+			exclude(module: 'javafx')
+			exclude(group: 'javafx')
+	}
+	implementation 'org.controlsfx:controlsfx:11.0.2',{
+		exclude(module: 'javafx')
+		exclude(group: 'javafx')
+	}
 	// https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
 	implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
 
