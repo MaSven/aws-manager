@@ -3,7 +3,7 @@ plugins {
 	id 'org.openjfx.javafxplugin' version '0.0.9'
 	id 'org.beryx.jlink' version '2.21.0'
 }
-
+import org.javamodularity.moduleplugin.tasks.ModularJavaExec
 javafx {
 	version = '14'
 	modules = [
@@ -13,26 +13,21 @@ javafx {
 }
 
 
-
-
-
-
-
-
-
 tasks.withType(JavaCompile).each {
 	it.options.compilerArgs.add('--enable-preview')
 }
 
-tasks.withType(JavaExec).each {
-	it.args.add('--enable-preview')
+task runGui(type: ModularJavaExec){
+	group = "AwsManager"
+	mainClass.set("space.smarquardt.aws.manager.gui.Main")
+	mainModule.set("aws.manager.gui.Main")
+	jvmArgs = ["--enable-preview"]
 }
 
-mainClassName="space.smarquardt.aws.manager.gui.Main"
 application{
 	applicationDefaultJvmArgs = ['--enable-preview']
 	mainClassName="space.smarquardt.aws.manager.gui.Main"
-	mainModule = 'aws.manager.gui.Main'
+	mainModule.set('aws.manager.gui.Main')
 }
 
 jar {

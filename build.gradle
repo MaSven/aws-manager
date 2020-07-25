@@ -15,23 +15,7 @@ repositories {
 sourceCompatibility = 14
 targetCompatibility = 14
 
-spotless {
-	java {
-		googleJavaFormat()
-		encoding 'UTF-8'
-		importOrder 'java', 'javax', 'org', 'com', 'de.otto', '' // Importorder
-		removeUnusedImports() // removes any unused imports
-	}
-	freshmark {
-		target '*.md' // you have to set the target manually
-		//propertiesFile('gradle.properties')		loads all the properties in the given file
 
-	}
-	groovyGradle {
-		target '*.gradle' // default target of groovyGradle
-		greclipse()
-	}
-}
 
 
 
