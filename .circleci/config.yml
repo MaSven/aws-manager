@@ -45,7 +45,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-            - openjdk
+            - openjdk/jdk-14
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
