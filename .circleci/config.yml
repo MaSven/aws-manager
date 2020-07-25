@@ -41,7 +41,7 @@ jobs:
       - run:
           name: "echo"
           command: dir
-      - run: ./gradlew dependencies "-Dorg.gradle.java.home=openjdk/jdk-14.0.2"
+      - run: ./gradlew dependencies "-Dorg.gradle.java.home=openjdk/jdk-14.0.2" "--no-daemon"
       - save_cache:
           paths:
             - ~/.gradle
@@ -49,8 +49,8 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: ./gradlew test "-Dorg.gradle.java.home=openjdk/jdk-14.0.2"
-      - run: ./gradlew :gui:jpackageImage "-Dorg.gradle.java.home=openjdk/jdk-14.0.2"
+      - run: ./gradlew test "-Dorg.gradle.java.home=openjdk/jdk-14.0.2" "--no-daemon"
+      - run: ./gradlew :gui:jpackageImage "-Dorg.gradle.java.home=openjdk/jdk-14.0.2" "--no-daemon"
       - store_artifacts:
           path: gui/build/image
       - store_artifacts:
