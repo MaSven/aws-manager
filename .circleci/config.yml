@@ -37,20 +37,20 @@ jobs:
           command: (New-Object System.Net.WebClient).DownloadFile("https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_windows-x64_bin.zip","openjdk.zip")
       - run:
           name: "uncompress"
-          command: Expand-Archive -LiteralPath openjdk.zip -DestinationPath openjdk
+          command: Expand-Archive -Force -LiteralPath openjdk.zip -DestinationPath openjdk
       - run:
           name: "echo"
           command: dir
-      - run: ./gradlew dependencies "-Dorg.gradle.java.home=openjdk/jdk-14"
+      - run: ./gradlew dependencies "-Dorg.gradle.java.home=openjdk/jdk-14.0.2"
       - save_cache:
           paths:
             - ~/.gradle
-            - openjdk/jdk-14
+            - openjdk/jdk-14.0.2
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
       # run tests!
-      - run: ./gradlew test "-Dorg.gradle.java.home=openjdk/jdk-14"
-      - run: ./gradlew :gui:jpackageImage "-Dorg.gradle.java.home=openjdk/jdk-14"
+      - run: ./gradlew test "-Dorg.gradle.java.home=openjdk/jdk-14.0.2"
+      - run: ./gradlew :gui:jpackageImage "-Dorg.gradle.java.home=openjdk/jdk-14.0.2"
       - store_artifacts:
           path: gui/build/image
       - store_artifacts:
