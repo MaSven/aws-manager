@@ -1,16 +1,8 @@
 package space.smarquardt.aws.manager.sqs;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 import io.vavr.API;
 import io.vavr.CheckedFunction1;
 import io.vavr.collection.Stream;
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.ListQueuesRequest;
@@ -21,17 +13,30 @@ import space.smarquardt.aws.manager.sqsinterface.Result;
 import space.smarquardt.aws.manager.sqsinterface.Sqs;
 import space.smarquardt.aws.manager.sqsinterface.SqsAttribute;
 import space.smarquardt.aws.manager.sqsinterface.SqsObject;
+import space.smarquardt.aws.manager.stsinterface.Sts;
+
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ServiceLoader;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class SqsImpl implements Sqs {
 
   private final SqsClient sqsClient;
 
+
+
   public SqsImpl() {
+
+    final var sts = ServiceLoader.load(Sts.class).findFirst().orElseThrow(() -> new RuntimeException("Could not find Sts provider"));
     this.sqsClient =
-        SqsClient.builder()
-            .httpClient(ApacheHttpClient.builder().build())
-            .credentialsProvider(DefaultCredentialsProvider.create())
-            .build();
+            SqsClient.builder()
+                    .httpClient(ApacheHttpClient.builder().build())
+                    .credentialsProvider(sts.getCurrentCredentials())
+                    .build();
   }
 
   @Override

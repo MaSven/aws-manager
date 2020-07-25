@@ -7,7 +7,8 @@ module aws.manager.gui.Main {
   requires java.annotation;
 
   opens space.smarquardt.aws.manager.gui to
-      javafx.graphics;
+      javafx.graphics,
+      javafx.base;
   opens space.smarquardt.aws.manager.gui.sqs to
       afterburner.fx,
       javafx.fxml;
@@ -15,4 +16,8 @@ module aws.manager.gui.Main {
   requires aws.manager.sqsinterface.Main;
 
   uses space.smarquardt.aws.manager.sqsinterface.Sqs;
+
+  requires aws.manager.stsinterface.main;
+
+  uses space.smarquardt.aws.manager.stsinterface.Sts;
 }

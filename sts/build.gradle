@@ -1,0 +1,15 @@
+plugins {
+	id 'java'
+}
+
+
+
+
+dependencies {
+	implementation('software.amazon.awssdk:sts'){
+		exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
+	}
+
+	implementation project(':stsinterface')
+}
+

@@ -23,7 +23,12 @@ javafx {
 tasks.withType(JavaCompile).each {
 	it.options.compilerArgs.add('--enable-preview')
 }
-mainClassName="aws.sqs.testmessagesender.gui.Main/space.smarquardt.aws.manager.gui.Main"
+
+tasks.withType(JavaExec).each {
+	it.args.add('--enable-preview')
+}
+
+mainClassName="space.smarquardt.aws.manager.gui.Main"
 application{
 	applicationDefaultJvmArgs = ['--enable-preview']
 	mainClassName="space.smarquardt.aws.manager.gui.Main"
@@ -33,7 +38,7 @@ application{
 jar {
 	manifest {
 		attributes 'Implementation-Title': "directer",
-		'Main-Class': 'de.otto.ipanema.tools.aws.sqs.testmessagesender.gui.Main'
+		'Main-Class': 'space.smarquardt.aws.manager.gui.Main'
 	}
 }
 
@@ -42,6 +47,10 @@ jar {
 dependencies {
 	implementation project(':sqsinterface')
 	runtimeOnly project(':sqs')
+
+	implementation project(':stsinterface')
+	runtimeOnly project(':sts')
+
 	implementation group: 'com.airhacks', name: 'afterburner.fx', version: '1.7.0'
 	implementation 'org.controlsfx:controlsfx:11.0.2'
 	// https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api

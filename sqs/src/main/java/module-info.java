@@ -11,7 +11,8 @@ module aws.manager.sqs.Main {
   requires software.amazon.awssdk.http.apache;
   requires com.fasterxml.jackson.databind;
   requires io.vavr;
-
+  requires aws.manager.stsinterface.main;
+  uses space.smarquardt.aws.manager.stsinterface.Sts;
   provides Sqs with
       SqsImpl;
 }

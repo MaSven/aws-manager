@@ -3,3 +3,6 @@ include 'cli'
 include 'sqsinterface'
 include 'sqs'
 include 'gui'
+include 'stsinterface'
+include 'sts'
+

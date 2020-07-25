@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'java-library'
-	id "com.diffplug.gradle.spotless" version "3.28.1"
+	id "com.diffplug.spotless" version "5.1.0"
 	id 'org.javamodularity.moduleplugin' version '1.7.0' apply false
 }
 
@@ -39,10 +39,11 @@ spotless {
 subprojects {
 	apply plugin: 'java'
 	apply plugin: "org.javamodularity.moduleplugin"
-	apply plugin: 'com.diffplug.gradle.spotless'
+	apply plugin: 'com.diffplug.spotless'
 	spotless {
 		java {
 			googleJavaFormat()
+
 			encoding 'UTF-8'
 			importOrder 'java', 'javax', 'org', 'com', 'de.otto', '' // Importorder
 			removeUnusedImports() // removes any unused imports
@@ -83,6 +84,8 @@ subprojects {
 	}
 
 	dependencies {
+		implementation('software.amazon.awssdk:apache-client')
+		implementation(platform("software.amazon.awssdk:bom:$awssdkVersion"))
 		testImplementation "org.junit.jupiter:junit-jupiter-api:$junitversion"
 		testImplementation "org.junit.jupiter:junit-jupiter-params:$junitversion"
 		testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitversion"

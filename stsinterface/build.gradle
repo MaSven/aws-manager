@@ -1,0 +1,12 @@
+plugins {
+	id 'java-library'
+}
+
+group 'space.smarquardt.aws.manager'
+version '1.0-SNAPSHOT'
+
+
+
+dependencies {
+	api('software.amazon.awssdk:auth')
+}

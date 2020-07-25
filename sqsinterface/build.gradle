@@ -1,3 +1,9 @@
 plugins {
 	id 'java'
 }
+
+spotless{
+	java{
+		targetExclude("src/main/java/space/smarquardt/aws/manager/sqsinterface/Result.java","src/main/java/space/smarquardt/aws/manager/sqsinterface/SqsObject.java")
+	}
+}
