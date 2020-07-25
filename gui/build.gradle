@@ -47,12 +47,10 @@ dependencies {
 	runtimeOnly project(':sts')
 
 	implementation group: 'com.airhacks', name: 'afterburner.fx', version: '1.7.0', {
-			exclude(module: 'javafx')
-			exclude(group: 'javafx')
+		exclude(group: 'org.openjfx.javafx')
 	}
 	implementation 'org.controlsfx:controlsfx:11.0.2',{
-		exclude(module: 'javafx')
-		exclude(group: 'javafx')
+		exclude(group: 'org.openjfx')
 	}
 	// https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
 	implementation group: 'javax.annotation', name: 'javax.annotation-api', version: '1.3.2'
@@ -80,8 +78,6 @@ jlink{
 		requires 'java.logging';
 		requires 'java.xml';
 		requires 'java.security.jgss';
-		requires 'javafx.base';
-		requires 'javafx.fxml';
 		requires 'jdk.unsupported';
 		requires 'java.management';
 		requires 'java.naming';
