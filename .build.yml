@@ -1,6 +1,7 @@
 image: fedora/rawhide
 packages:
   - java-latest-openjdk-devel.x86_64
+  - java-latest-openjdk-jmods.x86_64
 sources:
   - https://git.sr.ht/~_masven/aws-manager
 tasks:
