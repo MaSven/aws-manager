@@ -50,9 +50,9 @@ jobs:
 
       # run tests!
       - run: ./gradlew test "-Dorg.gradle.java.home=openjdk/jdk-14.0.2" "--no-daemon"
-      - run: ./gradlew :gui:jpackageImage "-Dorg.gradle.java.home=openjdk/jdk-14.0.2" "--no-daemon"
+      - run: ./gradlew :gui:jlinkZip "-Dorg.gradle.java.home=openjdk/jdk-14.0.2" "--no-daemon"
       - store_artifacts:
-          path: gui/build/image
+          path: gui/build/image.zip
       - store_artifacts:
           path: gui/build/jpackage
 
