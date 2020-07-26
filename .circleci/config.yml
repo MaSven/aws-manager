@@ -34,10 +34,17 @@ jobs:
             - v1-dependencies-
       - run:
           name: "Install java 15"
-          command: (New-Object System.Net.WebClient).DownloadFile("https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_windows-x64_bin.zip","openjdk.zip")
+          command: |
+              if (-Not( Test-Path openjdk/jdk-14.0.2)){
+                         (New-Object System.Net.WebClient).DownloadFile("https://download.java.net/java/GA/jdk14.0.2/205943a0976c4ed48cb16f1043c5c647/12/GPL/openjdk-14.0.2_windows-x64_bin.zip","openjdk.zip")
+                }
+
       - run:
           name: "uncompress"
-          command: Expand-Archive -Force -LiteralPath openjdk.zip -DestinationPath openjdk
+          command: |
+              if (Test-Path openjdk.zip){
+                Expand-Archive -Force -LiteralPath openjdk.zip -DestinationPath openjdk
+              }
       - run:
           name: "echo"
           command: dir
