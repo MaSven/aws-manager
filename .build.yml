@@ -4,6 +4,8 @@ packages:
 sources:
   - https://git.sr.ht/~_masven/aws-manager
 tasks:
+  - setup: |
+        cd aws-manager
   - test: |
       ./gradlew test
   - build: |
