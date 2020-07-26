@@ -1,0 +1,12 @@
+image: fedora/rawhide
+packages:
+  - java-latest-openjdk-devel.x86_64
+sources:
+  - https://git.sr.ht/~_masven/aws-manager
+tasks:
+  - test: |
+      ./gradlew test
+  - build: |
+      ./gradlew :gui:jlinkZip
+artifacts:
+  - gui/build/image.zip
