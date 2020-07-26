@@ -7,8 +7,10 @@ tasks:
   - setup: |
         cd aws-manager
   - test: |
+      cd aws-manager
       ./gradlew test
   - build: |
+      cd aws-manager
       ./gradlew :gui:jlinkZip
 artifacts:
   - gui/build/image.zip
