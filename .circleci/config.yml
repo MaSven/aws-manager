@@ -53,6 +53,4 @@ jobs:
       - run: ./gradlew :gui:jlinkZip "-Dorg.gradle.java.home=openjdk/jdk-14.0.2" "--no-daemon"
       - store_artifacts:
           path: gui/build/image.zip
-      - store_artifacts:
-          path: gui/build/jpackage
 
