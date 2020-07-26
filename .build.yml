@@ -8,16 +8,16 @@ tasks:
   - setup: |
         cd aws-manager
   - test: |
-      cd aws-manager
-      ./gradlew test
+        cd aws-manager
+        ./gradlew test
   - prepareModule: |
-      cd aws-manager
-      ./gradlew prepareMergedJarsDir
-      ./gradlew createMergedModule
-      ./gradlew createDelegatingModules
-      ./gradlew prepareModulesDir
+        cd aws-manager
+        ./gradlew prepareMergedJarsDir
+        ./gradlew createMergedModule
+        ./gradlew createDelegatingModules
+        ./gradlew prepareModulesDir
   - build: |
-      cd aws-manager
-      ./gradlew :gui:jlinkZip
+        cd aws-manager
+        ./gradlew :gui:jlinkZip
 artifacts:
   - aws-manager/gui/build/image.zip
