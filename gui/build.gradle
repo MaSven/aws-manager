@@ -63,7 +63,8 @@ jlink{
 		'--compress',
 		'2',
 		'--no-header-files',
-		'--no-man-pages'
+		'--no-man-pages',
+        '--include-locales=de'
 	]
 	addExtraDependencies("javafx")
 	launcher{
