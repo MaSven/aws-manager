@@ -13,4 +13,4 @@ tasks:
       cd aws-manager
       ./gradlew :gui:jlinkZip
 artifacts:
-  - gui/build/image.zip
+  - aws-manager/gui/build/image.zip
