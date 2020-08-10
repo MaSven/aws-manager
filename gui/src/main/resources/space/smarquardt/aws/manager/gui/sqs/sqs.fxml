@@ -143,10 +143,33 @@
          <top>
             <HBox prefHeight="30.0" prefWidth="631.0" BorderPane.alignment="CENTER">
                <children>
-                  <ChoiceBox fx:id="profileChoiceBox" prefWidth="150.0" />
-                  <Button mnemonicParsing="false" onAction="#connetToAwsWithProfile" text="Connect">
+                  <Label text="ARN Profile" />
+                  <ChoiceBox fx:id="profileChoiceBox" prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+                  <Button mnemonicParsing="false" onAction="#connetToAwsWithProfile" text="Assume">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Label text="MFA Devices">
                      <HBox.margin>
                         <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ChoiceBox fx:id="mfaChoice" prefWidth="150.0">
+                     <padding>
+                        <Insets left="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </ChoiceBox>
+                  <Button mnemonicParsing="false" onAction="#secondFatorAuth" text="2FA">
+                     <HBox.margin>
+                        <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
                </children>

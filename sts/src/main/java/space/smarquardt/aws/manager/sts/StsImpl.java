@@ -7,11 +7,12 @@ import space.smarquardt.aws.manager.stsinterface.Profile;
 import space.smarquardt.aws.manager.stsinterface.Sts;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class StsImpl implements Sts {
 
-    private StsClientInstance instance;
+    private final StsClientInstance instance;
 
     public StsImpl() {
         this.instance = StsClientInstance.instance();
@@ -43,16 +44,29 @@ public class StsImpl implements Sts {
     }
 
     @Override
-    public void connect(String tokenCode) {
-        this.instance.connect(tokenCode);
+    public List<String> getMfaDevices() {
+        return ProfileFile.defaultProfileFile().profiles().values().stream().map(profile -> profile.property("mfa_serial")).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+    }
+
+    @Override
+    public void assumeRole(Profile profile) {
+        this.instance.assumeRole();
+    }
+
+
+    @Override
+    public void connect(String tokenCode,String mfaDeviceArn) {
+        this.instance.connect(tokenCode,mfaDeviceArn);
     }
 
 
 
     public List<Profile> getProfiles() {
         ProfileFile profileFile = ProfileFile.defaultProfileFile();
-        return profileFile.profiles().values().stream().filter(profile -> profile.property("mfa_serial").isPresent()).map(profile -> new Profile(profile.property("mfa_serial").orElseThrow(() -> new RuntimeException("No mfa_serial found")), profile.property("role_arn").orElseThrow(() -> new RuntimeException("no Role arn")), profile.name())).collect(Collectors.toList());
+        return profileFile.profiles().values().stream().filter(profile -> profile.property("mfa_serial").isPresent()).map(profile -> new Profile(profile.property("mfa_serial").orElse(null), profile.property("role_arn").orElse(null), profile.name())).collect(Collectors.toList());
     }
+
+
 
 
 }

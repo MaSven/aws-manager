@@ -18,7 +18,13 @@ public interface Sts {
   void reauthenticate();
 
 
-  void connect(String tokenCode);
+  List<String> getMfaDevices();
+
+
+  void assumeRole(Profile profile);
+
+
+  void connect(String tokenCode,String mfaDeviceArn);
 
 
 

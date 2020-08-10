@@ -33,23 +33,30 @@ public class SqsPresenter {
   @FXML public TextField filePath;
   @FXML public TextArea messageContent;
   @FXML public ChoiceBox<Profile> profileChoiceBox;
+  @FXML public ChoiceBox<String> mfaChoice;
   @FXML ListView<SqsObject> sqsList;
   private ObservableList<SqsObject> selectedItems;
   private final StringProperty messageBody = new SimpleStringProperty();
   private final StringProperty attributesBody = new SimpleStringProperty();
   private ReadOnlyProperty<Profile> selectedProfile;
-  private Sqs sqs;
-  private Sts sts;
+  private final Sqs sqs;
+  private final Sts sts;
+  private ReadOnlyProperty<String> seletedMfa;
 
-  public void initialize() {
-    this.sqs =
-        ServiceLoader.load(Sqs.class)
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("could not load SQS"));
-    this.sts =
-        ServiceLoader.load(Sts.class)
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("could not load STS"));
+
+    public SqsPresenter() {
+        this.sqs =
+                ServiceLoader.load(Sqs.class)
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("could not load SQS"));
+        this.sts =
+                ServiceLoader.load(Sts.class)
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("could not load STS"));
+    }
+
+    public void initialize() {
+
     final var awsProfiles = FXCollections.observableArrayList(this.sts.getCurrentProfiles());
     this.sqsList.setCellFactory(param -> new SqsListCell());
     Bindings.bindBidirectional(messageBody, messageContent.textProperty());
@@ -57,27 +64,32 @@ public class SqsPresenter {
     this.sqsList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     this.selectedItems = this.sqsList.selectionModelProperty().get().getSelectedItems();
     this.profileChoiceBox.setConverter(
-        new StringConverter<Profile>() {
-          @Override
-          public String toString(Profile object) {
-            return object.name();
-          }
-
-          @Override
-          public Profile fromString(String string) {
-            return sts.getCurrentProfiles().stream()
-                .filter(profile -> profile.name().equals(string))
-                .findFirst()
-                .orElse(null);
-          }
-        });
+            createProfileConverter());
     selectedProfile = this.profileChoiceBox.getSelectionModel().selectedItemProperty();
     this.selectedProfile.addListener(
         (observable, oldValue, newValue) -> this.sts.changeCurrentProfile(newValue));
     this.profileChoiceBox.setItems(awsProfiles);
+    this.seletedMfa= this.mfaChoice.getSelectionModel().selectedItemProperty();
   }
 
-  public void loadQueues() {
+    private StringConverter<Profile> createProfileConverter() {
+        return new StringConverter<>() {
+            @Override
+            public String toString(Profile object) {
+                return object.name();
+            }
+
+            @Override
+            public Profile fromString(String string) {
+                return sts.getCurrentProfiles().stream()
+                        .filter(profile -> profile.name().equals(string))
+                        .findFirst()
+                        .orElse(null);
+            }
+        };
+    }
+
+    public void loadQueues() {
     this.sqs
         .getCurrentQueues()
         .thenAcceptAsync(
@@ -136,6 +148,10 @@ public class SqsPresenter {
   }
 
   public void connetToAwsWithProfile(ActionEvent actionEvent) {
+
+  }
+
+  public void secondFatorAuth(ActionEvent actionEvent) {
     TextInputDialog textInputDialog = new TextInputDialog();
     textInputDialog.setTitle("Pleas insert MFA token");
     textInputDialog
