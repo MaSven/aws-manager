@@ -10,7 +10,7 @@ tasks:
   - test: |
         cd aws-manager
         ./gradlew test
-  - prepareModule: |
+  - preparemodule: |
         cd aws-manager
         ./gradlew prepareMergedJarsDir
         ./gradlew createMergedModule

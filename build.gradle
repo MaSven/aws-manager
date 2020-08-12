@@ -52,8 +52,8 @@ subprojects {
 
 	version "1.0-SNAPSHOT"
 
-	sourceCompatibility = 15
-	targetCompatibility = 15
+	sourceCompatibility = 14
+	targetCompatibility = 14
 
 	repositories {
 		mavenCentral()
