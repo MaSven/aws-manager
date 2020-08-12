@@ -25,9 +25,7 @@ import space.smarquardt.aws.manager.stsinterface.Profile;
 import space.smarquardt.aws.manager.stsinterface.Sts;
 
 public class SqsPresenter {
-  @FXML public Button refresh;
   @FXML public TextArea responseField;
-  @FXML public Button sendCurrent;
   @FXML public TextArea attributesField;
   @FXML public TextField attributesPath;
   @FXML public TextField filePath;
@@ -43,19 +41,18 @@ public class SqsPresenter {
   private final Sts sts;
   private ReadOnlyProperty<String> seletedMfa;
 
+  public SqsPresenter() {
+    this.sqs =
+        ServiceLoader.load(Sqs.class)
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("could not load SQS"));
+    this.sts =
+        ServiceLoader.load(Sts.class)
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("could not load STS"));
+  }
 
-    public SqsPresenter() {
-        this.sqs =
-                ServiceLoader.load(Sqs.class)
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("could not load SQS"));
-        this.sts =
-                ServiceLoader.load(Sts.class)
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("could not load STS"));
-    }
-
-    public void initialize() {
+  public void initialize() {
 
     final var awsProfiles = FXCollections.observableArrayList(this.sts.getCurrentProfiles());
     this.sqsList.setCellFactory(param -> new SqsListCell());
@@ -63,33 +60,33 @@ public class SqsPresenter {
     Bindings.bindBidirectional(attributesBody, this.attributesField.textProperty());
     this.sqsList.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
     this.selectedItems = this.sqsList.selectionModelProperty().get().getSelectedItems();
-    this.profileChoiceBox.setConverter(
-            createProfileConverter());
+    this.profileChoiceBox.setConverter(createProfileConverter());
     selectedProfile = this.profileChoiceBox.getSelectionModel().selectedItemProperty();
     this.selectedProfile.addListener(
         (observable, oldValue, newValue) -> this.sts.changeCurrentProfile(newValue));
     this.profileChoiceBox.setItems(awsProfiles);
-    this.seletedMfa= this.mfaChoice.getSelectionModel().selectedItemProperty();
+    this.seletedMfa = this.mfaChoice.getSelectionModel().selectedItemProperty();
+    this.mfaChoice.setItems(FXCollections.observableArrayList(this.sts.getMfaDevices()));
   }
 
-    private StringConverter<Profile> createProfileConverter() {
-        return new StringConverter<>() {
-            @Override
-            public String toString(Profile object) {
-                return object.name();
-            }
+  private StringConverter<Profile> createProfileConverter() {
+    return new StringConverter<>() {
+      @Override
+      public String toString(Profile object) {
+        return object.name();
+      }
 
-            @Override
-            public Profile fromString(String string) {
-                return sts.getCurrentProfiles().stream()
-                        .filter(profile -> profile.name().equals(string))
-                        .findFirst()
-                        .orElse(null);
-            }
-        };
-    }
+      @Override
+      public Profile fromString(String string) {
+        return sts.getCurrentProfiles().stream()
+            .filter(profile -> profile.name().equals(string))
+            .findFirst()
+            .orElse(null);
+      }
+    };
+  }
 
-    public void loadQueues() {
+  public void loadQueues() {
     this.sqs
         .getCurrentQueues()
         .thenAcceptAsync(
@@ -148,17 +145,18 @@ public class SqsPresenter {
   }
 
   public void connetToAwsWithProfile(ActionEvent actionEvent) {
-
+    this.sts.assumeRole(this.selectedProfile.getValue());
+    this.loadQueues();
   }
 
-  public void secondFatorAuth(ActionEvent actionEvent) {
+  public void secondFactorAuth(ActionEvent actionEvent) {
     TextInputDialog textInputDialog = new TextInputDialog();
     textInputDialog.setTitle("Pleas insert MFA token");
     textInputDialog
         .showAndWait()
         .ifPresent(
             s -> {
-              this.sts.connect(s);
+              this.sts.connect(s, this.seletedMfa.getValue());
               this.loadQueues();
             });
   }

@@ -25,18 +25,23 @@ import java.util.stream.Collectors;
 
 public class SqsImpl implements Sqs {
 
-  private final SqsClient sqsClient;
+
 
 
 
   public SqsImpl() {
 
+
+
+
+  }
+
+  private SqsClient getSqsClient(){
     final var sts = ServiceLoader.load(Sts.class).findFirst().orElseThrow(() -> new RuntimeException("Could not find Sts provider"));
-    this.sqsClient =
-            SqsClient.builder()
-                    .httpClient(ApacheHttpClient.builder().build())
-                    .credentialsProvider(sts.getCurrentCredentials())
-                    .build();
+    return SqsClient.builder()
+            .httpClient(ApacheHttpClient.builder().build())
+            .credentialsProvider(sts.getCurrentCredentials())
+            .build();
   }
 
   @Override
@@ -63,7 +68,7 @@ public class SqsImpl implements Sqs {
             .queueUrl(queueName)
             .messageAttributes(messageAttributes)
             .build();
-    final var sendMessageResponse = this.sqsClient.sendMessage(sendMessageRequest);
+    final var sendMessageResponse = this.getSqsClient().sendMessage(sendMessageRequest);
 
     return new Result(
         sendMessageResponse.sdkHttpResponse().statusCode(), sendMessageResponse.toString());
@@ -74,7 +79,7 @@ public class SqsImpl implements Sqs {
     return CompletableFuture.supplyAsync(
         () -> {
           ListQueuesRequest listQueuesRequest = ListQueuesRequest.builder().build();
-          ListQueuesResponse listQueuesResponse = this.sqsClient.listQueues(listQueuesRequest);
+          ListQueuesResponse listQueuesResponse = this.getSqsClient().listQueues(listQueuesRequest);
           return listQueuesResponse.queueUrls().stream()
               .map(API.unchecked((CheckedFunction1<String, URI>) URI::new))
               .map(

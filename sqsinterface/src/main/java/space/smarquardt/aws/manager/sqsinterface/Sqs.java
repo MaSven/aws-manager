@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,21 +33,26 @@ public interface Sqs {
   static List<SqsAttribute> generateAttributes(Path attributeFile) throws IOException {
     return Files.readAllLines(attributeFile).stream()
         .map(Sqs::generateAttributes)
+            .flatMap(Optional::stream)
         .collect(Collectors.toList());
   }
 
   static List<SqsAttribute> generateAttributesFromBody(String attributes) {
     return Stream.of(attributes.split("\\R"))
         .map(Sqs::generateAttributes)
+            .flatMap(Optional::stream)
         .collect(Collectors.toList());
   }
 
-  static SqsAttribute generateAttributes(String attributeString) {
+  static Optional<SqsAttribute> generateAttributes(String attributeString) {
     final var attributeArguments = attributeString.split(",");
-    return new SqsAttribute(
-        attributeArguments[0],
-        attributeArguments[1],
-        SqsAttribute.SqsType.valueOf(attributeArguments[2]));
+    if(attributeArguments.length==3) {
+      return Optional.of(new SqsAttribute(
+              attributeArguments[0],
+              attributeArguments[1],
+              SqsAttribute.SqsType.valueOf(attributeArguments[2])));
+    }
+    return Optional.empty();
   }
 
   /** @return */

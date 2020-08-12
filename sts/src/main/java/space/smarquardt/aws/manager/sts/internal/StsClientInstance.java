@@ -1,12 +1,14 @@
 package space.smarquardt.aws.manager.sts.internal;
 
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.*;
 import software.amazon.awssdk.http.SdkHttpClient;
 import software.amazon.awssdk.http.apache.ApacheHttpClient;
 import software.amazon.awssdk.services.sts.StsClient;
+import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider;
 import software.amazon.awssdk.services.sts.auth.StsGetSessionTokenCredentialsProvider;
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest;
 import software.amazon.awssdk.services.sts.model.AssumeRoleResponse;
+import software.amazon.awssdk.services.sts.model.Credentials;
 import software.amazon.awssdk.services.sts.model.GetSessionTokenRequest;
 import space.smarquardt.aws.manager.stsinterface.Profile;
 import space.smarquardt.aws.manager.stsinterface.Sts;
@@ -20,6 +22,8 @@ public enum StsClientInstance {
     private StsClientInstance instance;
     private AwsCredentialsProvider awsCredentialsProvider;
     private SdkHttpClient sdkHttpClient;
+
+    private AwsCredentialsProvider currentCredentials = null;
 
     private Profile currentProfile;
 
@@ -37,7 +41,7 @@ public enum StsClientInstance {
     }
 
     public AwsCredentialsProvider awsCredentialsProvider(){
-        return this.awsCredentialsProvider;
+        return this.currentCredentials;
     }
 
     public static StsClientInstance instance(){
@@ -48,11 +52,8 @@ public enum StsClientInstance {
     }
 
     public void assumeRole(){
-        final var durationInSeconds = (int) Duration.ofHours(2).toSeconds();
-        AssumeRoleRequest assumeRoleRequest = AssumeRoleRequest.builder().roleArn(currentProfile.roleArn()).roleSessionName("AWS Manager "+currentProfile.name()).durationSeconds(durationInSeconds).build();
-        AssumeRoleResponse assumeRoleResponse = this.stsAsyncClient.assumeRole(assumeRoleRequest);
-        System.out.println(assumeRoleResponse.assumedRoleUser());
-        System.out.println(stsAsyncClient.getCallerIdentity());
+        AssumeRoleRequest assumeRoleRequest = AssumeRoleRequest.builder().roleArn(currentProfile.roleArn()).roleSessionName("AWS-Manager-"+currentProfile.name()).build();
+        this.currentCredentials = StsAssumeRoleCredentialsProvider.builder().stsClient(this.stsAsyncClient).refreshRequest(assumeRoleRequest).asyncCredentialUpdateEnabled(true).build();
     }
 
     public void connect(String tokencode,String mfaDeviceArn){
