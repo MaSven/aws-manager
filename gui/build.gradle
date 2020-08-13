@@ -74,6 +74,7 @@ jlink{
 	mergedModule {
 		requires 'com.fasterxml.jackson.core';
 		requires 'javafx.graphics';
+        requires 'javafx.fxml';
 		requires 'com.fasterxml.jackson.annotation';
 		requires 'com.fasterxml.jackson.databind';
 		requires 'java.logging';
