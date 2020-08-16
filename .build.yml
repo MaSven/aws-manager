@@ -16,7 +16,7 @@ tasks:
         ./gradlew createMergedModule
         ./gradlew createDelegatingModules
         ./gradlew prepareModulesDir
-  -buildjlink: |
+  - buildjlink: |
       cd aws-manager
       ./gradlew :gui:jlink
   - build: |
