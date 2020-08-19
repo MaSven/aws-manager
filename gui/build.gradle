@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'org.openjfx.javafxplugin' version '0.0.9'
-	id 'org.beryx.jlink' version '2.21.0'
+	id 'org.beryx.jlink' version '2.21.3'
 }
 import org.javamodularity.moduleplugin.tasks.ModularJavaExec
 javafx {
@@ -68,13 +68,13 @@ jlink{
 	]
 	addExtraDependencies("javafx")
 	launcher{
-		name = "directer"
+		name = "aws-manager"
 		jvmArgs = ['--enable-preview']
 	}
 	mergedModule {
 		requires 'com.fasterxml.jackson.core';
 		requires 'javafx.graphics';
-        requires 'javafx.fxml';
+		requires 'javafx.fxml';
 		requires 'com.fasterxml.jackson.annotation';
 		requires 'com.fasterxml.jackson.databind';
 		requires 'java.logging';
@@ -95,5 +95,11 @@ jlink{
 	}
 	jpackage{
 		skipInstaller=false
+		installerOptions = [
+			"--java-options --Xmx1600m --enable-preview"
+		]
+		imageOptions = [
+			"--java-options --Xmx1600m --enable-preview"
+		]
 	}
 }
