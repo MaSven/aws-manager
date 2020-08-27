@@ -33,21 +33,22 @@ public interface Sqs {
   static List<SqsAttribute> generateAttributes(Path attributeFile) throws IOException {
     return Files.readAllLines(attributeFile).stream()
         .map(Sqs::generateAttributes)
-            .flatMap(Optional::stream)
+        .flatMap(Optional::stream)
         .collect(Collectors.toList());
   }
 
   static List<SqsAttribute> generateAttributesFromBody(String attributes) {
     return Stream.of(attributes.split("\\R"))
         .map(Sqs::generateAttributes)
-            .flatMap(Optional::stream)
+        .flatMap(Optional::stream)
         .collect(Collectors.toList());
   }
 
   static Optional<SqsAttribute> generateAttributes(String attributeString) {
     final var attributeArguments = attributeString.split(",");
-    if(attributeArguments.length==3) {
-      return Optional.of(new SqsAttribute(
+    if (attributeArguments.length == 3) {
+      return Optional.of(
+          new SqsAttribute(
               attributeArguments[0],
               attributeArguments[1],
               SqsAttribute.SqsType.valueOf(attributeArguments[2])));

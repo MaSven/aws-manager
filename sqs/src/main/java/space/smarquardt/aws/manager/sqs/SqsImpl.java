@@ -1,5 +1,13 @@
 package space.smarquardt.aws.manager.sqs;
 
+import java.net.URI;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ServiceLoader;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
 import io.vavr.API;
 import io.vavr.CheckedFunction1;
 import io.vavr.collection.Stream;
@@ -15,33 +23,19 @@ import space.smarquardt.aws.manager.sqsinterface.SqsAttribute;
 import space.smarquardt.aws.manager.sqsinterface.SqsObject;
 import space.smarquardt.aws.manager.stsinterface.Sts;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ServiceLoader;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
-
 public class SqsImpl implements Sqs {
 
+  public SqsImpl() {}
 
-
-
-
-  public SqsImpl() {
-
-
-
-
-  }
-
-  private SqsClient getSqsClient(){
-    final var sts = ServiceLoader.load(Sts.class).findFirst().orElseThrow(() -> new RuntimeException("Could not find Sts provider"));
+  private SqsClient getSqsClient() {
+    final var sts =
+        ServiceLoader.load(Sts.class)
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Could not find Sts provider"));
     return SqsClient.builder()
-            .httpClient(ApacheHttpClient.builder().build())
-            .credentialsProvider(sts.getCurrentCredentials())
-            .build();
+        .httpClient(ApacheHttpClient.builder().build())
+        .credentialsProvider(sts.getCurrentCredentials())
+        .build();
   }
 
   @Override
