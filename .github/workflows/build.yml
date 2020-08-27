@@ -22,24 +22,13 @@ jobs:
         with:
           name: aws-manager-${{ matrix.os}}
           path: gui/build/image.zip
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body_path: CHANGES.md
-          draft: false
-          prerelease: true
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
+      - name: Ranem image.zip
+        run: mv ./gui/build/image.zip ./gui/build/${{ matrix.os }}-aws-manager.zip
+      - name: Release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-          asset_path: ./gui/build/image.zip
-          asset_name: ${{matrix.os}}-aws-manager.zip
-          asset_content_type: application/zip
+          body_path: CHANGELOG.md
+          files: ./gui/build/${{ matrix.os }}-aws-manager.zip
