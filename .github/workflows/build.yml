@@ -17,5 +17,5 @@ jobs:
           arguments: jlinkZip
       - uses: actions/upload-artifact@v2
         with:
-          name: aws-manager
+          name: aws-manager-${{ matrix.os}}
           path: gui/build/image.zip
