@@ -44,8 +44,8 @@ public enum StsClientInstance {
   public void assumeRole() {
     AssumeRoleRequest assumeRoleRequest =
         AssumeRoleRequest.builder()
-            .roleArn(currentProfile.roleArn())
-            .roleSessionName("AWS-Manager-" + currentProfile.name())
+            .roleArn(currentProfile.getRoleArn())
+            .roleSessionName("AWS-Manager-" + currentProfile.getName())
             .build();
     this.currentCredentials =
         StsAssumeRoleCredentialsProvider.builder()

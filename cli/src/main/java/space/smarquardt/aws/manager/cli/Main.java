@@ -64,7 +64,7 @@ public class Main {
 
       System.out.printf(
           "Return message was %d",
-          sqs.sendMessage(queueurl, bodyContent, Sqs.generateAttributes(attributeFile)).status());
+          sqs.sendMessage(queueurl, bodyContent, Sqs.generateAttributes(attributeFile)).getStatus());
 
     } catch (ParseException | IOException e) {
       e.printStackTrace();

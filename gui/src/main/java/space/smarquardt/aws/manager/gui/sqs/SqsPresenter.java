@@ -73,13 +73,13 @@ public class SqsPresenter {
     return new StringConverter<>() {
       @Override
       public String toString(Profile object) {
-        return object.name();
+        return object.getName();
       }
 
       @Override
       public Profile fromString(String string) {
         return sts.getCurrentProfiles().stream()
-            .filter(profile -> profile.name().equals(string))
+            .filter(profile -> profile.getName().equals(string))
             .findFirst()
             .orElse(null);
       }
@@ -138,7 +138,7 @@ public class SqsPresenter {
   public void sendCurrent(ActionEvent actionEvent) {
     this.sqs
         .sendMessageAsync(
-            this.selectedItems.get(0).url(),
+            this.selectedItems.get(0).getUrl(),
             this.messageBody.get(),
             Sqs.generateAttributesFromBody(this.attributesBody.get()))
         .thenAcceptAsync(result -> this.responseField.setText(result.toString()));

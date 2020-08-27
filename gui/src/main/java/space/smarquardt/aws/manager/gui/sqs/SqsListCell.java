@@ -10,7 +10,7 @@ public class SqsListCell extends ListCell<SqsObject> {
   protected void updateItem(SqsObject item, boolean empty) {
     super.updateItem(item, empty);
     if (!empty) {
-      setText(item.name());
+      setText(item.getName());
     }
   }
 }

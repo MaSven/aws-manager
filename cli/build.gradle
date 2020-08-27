@@ -11,9 +11,7 @@ application{
 	mainModule='aws.sqs.testmessagesender.cli.main'
 }
 
-tasks.withType(JavaCompile).each {
-	it.options.compilerArgs.add('--enable-preview')
-}
+
 jar {
 	manifest {
 		attributes 'Implementation-Title': "directer",
@@ -41,7 +39,7 @@ jlink{
 	]
 	launcher{
 		name = "directer"
-		jvmArgs = ['--enable-preview']
+		jvmArgs = []
 	}
 	mergedModule {
 		requires 'com.fasterxml.jackson.core';

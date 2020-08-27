@@ -13,19 +13,16 @@ javafx {
 }
 
 
-tasks.withType(JavaCompile).each {
-	it.options.compilerArgs.add('--enable-preview')
-}
+
 
 task runGui(type: ModularJavaExec){
 	group = "AwsManager"
 	mainClass.set("space.smarquardt.aws.manager.gui.Main")
 	mainModule.set("aws.manager.gui.Main")
-	jvmArgs = ["--enable-preview"]
 }
 
 application{
-	applicationDefaultJvmArgs = ['--enable-preview']
+
 	mainClassName="space.smarquardt.aws.manager.gui.Main"
 	mainModule.set('aws.manager.gui.Main')
 }
@@ -69,7 +66,6 @@ jlink{
 	addExtraDependencies("javafx")
 	launcher{
 		name = "aws-manager"
-		jvmArgs = ['--enable-preview']
 	}
 	mergedModule {
 		requires 'com.fasterxml.jackson.core';
@@ -96,11 +92,11 @@ jlink{
 	jpackage{
 		skipInstaller=false
 		installerOptions = [
-			"--java-options --Xmx1600m --enable-preview"
+			"--java-options --Xmx1600m"
 		]
 
 		imageOptions = [
-			"--java-options --Xmx1600m --enable-preview"
+			"--java-options --Xmx1600m"
 		]
 	}
 }
