@@ -1,9 +1,6 @@
 # .github/workflows/build.yml
 name: Build new binary on every push
-on:
-  push:
-    tags:
-      - '*'
+on: [push]
 jobs:
   gradle:
     strategy:
