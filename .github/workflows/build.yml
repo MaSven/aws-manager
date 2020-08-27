@@ -15,3 +15,7 @@ jobs:
       - uses: eskatos/gradle-command-action@v1
         with:
           arguments: jlinkZip
+      - uses: actions/upload-artifact@v2
+        with:
+          name: aws-manager
+          path: gui/build/image.zip
