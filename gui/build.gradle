@@ -13,16 +13,19 @@ javafx {
 }
 
 
-
-
 task runGui(type: ModularJavaExec){
 	group = "AwsManager"
 	mainClass.set("space.smarquardt.aws.manager.gui.Main")
 	mainModule.set("aws.manager.gui.Main")
 }
 
-application{
+sourceSets {
+	main {
+		output.resourcesDir = "build/classes/java/main/"
+	}
+}
 
+application{
 	mainClassName="space.smarquardt.aws.manager.gui.Main"
 	mainModule.set('aws.manager.gui.Main')
 }
