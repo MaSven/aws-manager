@@ -1,11 +1,10 @@
 package space.smarquardt.aws.manager.stsinterface;
 
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-
 import java.util.List;
 
-public interface Sts {
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 
+public interface Sts {
 
   AwsCredentialsProvider getCurrentCredentials();
 
@@ -17,16 +16,9 @@ public interface Sts {
 
   void reauthenticate();
 
-
   List<String> getMfaDevices();
-
 
   void assumeRole(Profile profile);
 
-
-  void connect(String tokenCode,String mfaDeviceArn);
-
-
-
-
+  void connect(String tokenCode, String mfaDeviceArn);
 }
